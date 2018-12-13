@@ -2,8 +2,11 @@ import re
 from datetime import datetime, timedelta
 from collections import namedtuple, defaultdict, Counter
 
-INPUT_DATA = 'day4_input.txt'
-unsorted_sample_data = [
+from commonlib import determine_day, read_input_data
+
+
+DAY = determine_day(__file__)
+UNSORTED_SAMPLE_DATA = [
     '[1518-11-05 00:45] falls asleep',
     '[1518-11-03 00:29] wakes up',
     '[1518-11-01 00:00] Guard #10 begins shift',
@@ -23,7 +26,7 @@ unsorted_sample_data = [
     '[1518-11-03 00:05] Guard #10 begins shift',
 ]
 
-sorted_sample_data = [
+SORTED_SAMPLE_DATA = [
     '[1518-11-01 00:00] Guard #10 begins shift',
     '[1518-11-01 00:05] falls asleep',
     '[1518-11-01 00:25] wakes up',
@@ -46,11 +49,6 @@ sorted_sample_data = [
 
 Entry = namedtuple('Entry', ['timestamp', 'message'])
 
-
-def read_input_data(infile=INPUT_DATA): 
-    with open(infile, 'r') as f: 
-        data = [x.strip() for x in f.readlines()]
-    return data 
 
 def convert_input(in_data, do_sort=True):
     regex = re.compile(r"\[(?P<ts>[\d\-\:\s]+)\]\s(?P<msg>.+)")
@@ -133,15 +131,19 @@ def find_mode_sleepiest(naps):
     return sm[0], sm[1], sm[0] * sm[1]
 
 
-in_data = read_input_data()
-entries = convert_input(in_data)
-#print("Sorting Test:", convert_input(sorted_sample_data, False) == entries)
+def exec_day(sample=False):
+    if sample:
+        in_data = UNSORTED_SAMPLE_DATA
+    else:
+        in_data = read_input_data(DAY)
 
-gnaps = parse_guard_naps(entries)
-naps = compile_guard_nap_minutes(gnaps)
-p1 = find_max_sleepiest(naps)
-print("Part 1: {0} * {1} = {2}".format(*p1))
+    entries = convert_input(in_data)
+    # print("Sorting Test:", convert_input(SORTED_SAMPLE_DATA, False) == entries)
 
-p2 = find_mode_sleepiest(naps)
-print("Part 2: {0} * {1} = {2}".format(*p2))
+    gnaps = parse_guard_naps(entries)
+    naps = compile_guard_nap_minutes(gnaps)
+    p1 = find_max_sleepiest(naps)
+    print("Part 1: {0} * {1} = {2}".format(*p1))
 
+    p2 = find_mode_sleepiest(naps)
+    print("Part 2: {0} * {1} = {2}".format(*p2))

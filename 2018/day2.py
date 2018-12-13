@@ -1,11 +1,8 @@
-INPUT_DATA = 'day2_input.txt'
-sample_data = ['abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz']
+from commonlib import determine_day, read_input_data
 
 
-def read_input_data(infile=INPUT_DATA): 
-    with open(infile, 'r') as f: 
-        data = [x.strip() for x in f.readlines()]
-    return data 
+DAY = determine_day(__file__)
+SAMPLE_DATA = ['abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz']
 
 
 def get_counts(in_data, checksum_only=True):
@@ -35,10 +32,14 @@ def find_similar_ids(in_data, common_only=True):
                 return s1, s2
 
 
-in_data = read_input_data()
+def exec_day(sample=False):
+    if sample:
+        in_data = SAMPLE_DATA
+    else:
+        in_data = read_input_data(DAY)
 
-checksum = get_counts(in_data)
-print("Part 1:", checksum)
+    checksum = get_counts(in_data)
+    print("Part 1:", checksum)
 
-common_letters = find_similar_ids(in_data)
-print("Part 2:", ''.join(common_letters))
+    common_letters = find_similar_ids(in_data)
+    print("Part 2:", ''.join(common_letters))

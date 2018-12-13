@@ -1,13 +1,14 @@
 import re
 
-INPUT_DATA = 'day5_input.txt'
+from commonlib import determine_day, read_input_data
+
+
+DAY = determine_day(__file__)
 SAMPLE_DATA = 'dabAcCaCBAcCcaDA'
 
 
-def read_input_data(infile=INPUT_DATA): 
-    with open(infile, 'r') as f: 
-        data = f.read().strip()
-    return data 
+def read_func(f):
+    return f.read().strip()
 
 
 def get_polar_units(in_data, delim="|"):
@@ -37,9 +38,14 @@ def find_shortest_polymer(in_data):
     return sorted(results, key=lambda p: len(p[1]))[0][1]
 
 
-in_data = read_input_data()
-p1 = remove_opposite_units(in_data)
-print("Part 1:", len(p1))
+def exec_day(sample=False):
+    if sample:
+        in_data = SAMPLE_DATA
+    else:
+        in_data = read_input_data(DAY, read_func)
 
-p2 = find_shortest_polymer(in_data)
-print("Part 2:", len(p2))
+    p1 = react_polymer(in_data)
+    print("Part 1:", len(p1))
+
+    p2 = find_shortest_polymer(in_data)
+    print("Part 2:", len(p2))

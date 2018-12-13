@@ -1,16 +1,13 @@
 import re
 from collections import namedtuple
 
-INPUT_DATA = 'day3_input.txt'
-sample_data = ['#1 @ 1,3: 4x4', '#2 @ 3,1: 4x4', '#3 @ 5,5: 2x2', '#4 @ 5,5: 2x2', '#5 @ 3,3: 2x2', '#6 @ 7,1: 4x4']
+from commonlib import determine_day, read_input_data
+
+
+DAY = determine_day(__file__)
+SAMPLE_DATA = ['#1 @ 1,3: 4x4', '#2 @ 3,1: 4x4', '#3 @ 5,5: 2x2', '#4 @ 5,5: 2x2', '#5 @ 3,3: 2x2', '#6 @ 7,1: 4x4']
 
 Claim = namedtuple('Claim', ['claim_id', 'min_x', 'min_y', 'max_x', 'max_y'])
-
-
-def read_input_data(infile=INPUT_DATA): 
-    with open(infile, 'r') as f: 
-        data = [x.strip() for x in f.readlines()]
-    return data 
 
 
 def parse_into_bboxes(in_data):
@@ -79,12 +76,17 @@ def find_no_overlap(claims):
     return set(claims).difference(overlapped)
 
 
-in_data = read_input_data()
-claims = parse_into_bboxes(in_data)
+def exec_day(sample=False):
+    if sample:
+        in_data = SAMPLE_DATA
+    else:
+        in_data = read_input_data(DAY)
 
-overlapped = find_overlapping(claims)
-print("Part 1:", overlapped)
+    claims = parse_into_bboxes(in_data)
 
-good_claim = find_no_overlap(claims)
-print("Part 2:", good_claim)
+    overlapped = find_overlapping(claims)
+    print("Part 1:", overlapped)
+
+    good_claim = find_no_overlap(claims)
+    print("Part 2:", good_claim)
 

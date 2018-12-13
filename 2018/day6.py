@@ -1,7 +1,9 @@
-import re
 from collections import namedtuple, defaultdict
 
-INPUT_DATA = 'day6_input.txt'
+from commonlib import determine_day, read_input_data
+
+
+DAY = determine_day(__file__)
 SAMPLE_DATA = [
     '1, 1',
     '1, 6',
@@ -14,12 +16,6 @@ SAMPLE_DATA = [
 
 
 Coords = namedtuple('Coords', ['x', 'y'])
-
-
-def read_input_data(infile=INPUT_DATA): 
-    with open(infile, 'r') as f: 
-        data = [x.strip() for x in f.readlines()]
-    return data 
 
 
 def convert_to_coords(in_data, delim=","):
@@ -89,12 +85,17 @@ def find_most_nearby_coords(mapped, max_dist_sum=10000):
     return acceptable
 
 
-in_data = read_input_data()
-coords = convert_to_coords(in_data)
-mapped, areas, infinites = map_and_calc_areas(coords)
+def exec_day(sample=False):
+    if sample:
+        in_data = SAMPLE_DATA
+    else:
+        in_data = read_input_data(DAY)
 
-p1 = find_largest_area(areas, infinites)
-print("Part 1:", p1[0], p1[1])
+    coords = convert_to_coords(in_data)
+    mapped, areas, infinites = map_and_calc_areas(coords)
 
-p2 = find_most_nearby_coords(mapped)
-print("Part 2:", len(p2))
+    p1 = find_largest_area(areas, infinites)
+    print("Part 1:", p1[0], p1[1])
+
+    p2 = find_most_nearby_coords(mapped)
+    print("Part 2:", len(p2))
